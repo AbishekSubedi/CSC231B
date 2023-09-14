@@ -11,7 +11,7 @@ class GuessingGame:
     def getRules(self):
         """Returns a string describing what the player should do, suitable to be printed to prompt them to guess a number between 1 and 10."""
         #note: This returns an empty string. Finish the function!
-        return "Welcome to the battelship game. You have to guess the location of the battelship which are hidden between 1 - 10."
+        return "Welcome to the battelship game. You have to guess the location of the battelship which are hidden between 1 - 10.\nYou will get maximum 5 chances to guess the correct coodinates of the battelship.\nTry your best to win the game!\nLet's start the game!!!"
 
     def checkGameDone(self):
         """Returns a boolean value, True if the game is over, False otherwise."""
@@ -30,23 +30,39 @@ class GuessingGame:
             return 1
         else:
             return 0
+        
+    def checkCounts(self, count):
+        count += 1
+        return count
+
 
     def playGame(self):
         """Instructs the current game instance to play itself with the user via the terminal (std i/o)."""
         print(self.getRules())
+        count = 0
 
-        while not self.checkGameDone():
+        while not self.checkGameDone() and count < 5:
             user_guess = int(input("Enter the cordinate for the battelship: "))
             result = self.checkGuess(user_guess)
 
             if result == -1:
-                print("Your guess is lower then the coordinates :(")
+                print("Your guess is lower.")
+                # self.checkCounts(count)
+                # print(f"Remaining Guesses: {5 - self.checkCounts(count)}")
             elif result == 1:
-                print("Your guess is higher then the coordinates :(")
+                print("Your guess is higher.")
+                # self.checkCounts(count)
+                # print(f"Remaining Guesses: {5 - self.checkCounts(count)}")
             else:
-                print("You guessed the correct cordinates. Congrats you won the game :D")
+                print("You guessed the correct cordinates.\nCongrats you won the game :D")
                 self.markGameDone()
 
+            count = self.checkCounts(count)
+            remaining_guesses = 5 - count
+            if remaining_guesses > 0:
+                print(f"Remaining guesses: {remaining_guesses}")
+            else:
+                print(f"{remaining_guesses} remaning guesses.\nYou lost the game.")
 
 if __name__ == "__main__":
     game = GuessingGame()
