@@ -30,39 +30,31 @@ class GuessingGame:
             return 1
         else:
             return 0
-        
-    def checkCounts(self, count):
-        count += 1
-        return count
-
 
     def playGame(self):
         """Instructs the current game instance to play itself with the user via the terminal (std i/o)."""
         print(self.getRules())
         count = 0
 
-        while not self.checkGameDone() and count < 5:
+        while not self.checkGameDone():
             user_guess = int(input("Enter the cordinate for the battelship: "))
             result = self.checkGuess(user_guess)
 
             if result == -1:
-                print("Your guess is lower.")
-                # self.checkCounts(count)
-                # print(f"Remaining Guesses: {5 - self.checkCounts(count)}")
+                print("Your guess is lower. Try higher coordinates.")
+                count += 1
+                print(f"Remaining Guesses: {5 - count}")
             elif result == 1:
-                print("Your guess is higher.")
-                # self.checkCounts(count)
-                # print(f"Remaining Guesses: {5 - self.checkCounts(count)}")
+                print("Your guess is higher. Try lower coordinates.")
+                count += 1
+                print(f"Remaining Guesses: {5 - count}")
             else:
                 print("You guessed the correct cordinates.\nCongrats you won the game :D")
                 self.markGameDone()
 
-            count = self.checkCounts(count)
-            remaining_guesses = 5 - count
-            if remaining_guesses > 0:
-                print(f"Remaining guesses: {remaining_guesses}")
-            else:
-                print(f"{remaining_guesses} remaning guesses.\nYou lost the game.")
+            if count == 5:
+                self.markGameDone()
+                print(f"{5 - count} remaning guesses.\nYou lost the game.")
 
 if __name__ == "__main__":
     game = GuessingGame()
