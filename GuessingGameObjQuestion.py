@@ -54,7 +54,7 @@ class GuessingGame:
 
             if count == 5:
                 self.markGameDone()
-                print(f"{5 - count} remaning guesses.\nYou lost the game.")
+                print(f"{5 - count} remaning guesses.\nYou lost the game.\nThe actual coordinate of the battelship is {self.num}")
 
 if __name__ == "__main__":
     game = GuessingGame()
