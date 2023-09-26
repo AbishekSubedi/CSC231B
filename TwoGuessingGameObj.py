@@ -14,7 +14,7 @@ class TwoGuessingGame:
 
     def getRules(self):
         """Returns a string describing what the player should do, suitable to be printed to prompt them to guess a number between 1 and 10."""
-        return "Guess a number between 1 and 10. Try to solve both games at once!"
+        return "Guess a number between 1 and 10. Try to solve both games at once! \nYou will get 5 chances to make the correct guess!!!"
 
     def allGamesDone(self):
         """Returns True if both games are finished, and False otherwise"""
@@ -58,6 +58,8 @@ class TwoGuessingGame:
         """Instructs the current game instance to play itself with the user via the terminal (std i/o)."""
         print(self.getRules())
 
+        count_game_cycle = 0
+
         while not self.allGamesDone():
             user_guess = int(input("What's your guess? "))
             if self.checkCorrectGuess(user_guess):
@@ -65,11 +67,15 @@ class TwoGuessingGame:
                 print(f"You got the right number for {name}")
             self.printGuessFeedback(user_guess)
 
-            # print(self.printGuessFeedback(user_guess))
-            # if self.game1 == self.checkCorrectGuess(user_guess):
-            #     print(f"You got the correct number for {self.name1}")
-            # elif self.game2 == self.checkCorrectGuess(user_guess):
-            #     print(f"You got the correct number for {self.name2}")
+            total_guess = 5
+            count_game_cycle += 1
+            remaining_guess = total_guess - count_game_cycle
+            print(f"Remaining Guesses = {remaining_guess}")
+
+            if count_game_cycle == 5:
+                self.game1.markGameDone()
+                self.game2.markGameDone()
+                print(f"Sorry you lost the game. \nYou used all your guess.\nSo the correct number for {self.name1} is {self.game1.num} and \nthe correct number for {self.name2} is {self.game2.num}")
 
 
 if __name__ == "__main__":
