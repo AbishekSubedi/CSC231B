@@ -1,11 +1,13 @@
 import GuessingGameObjQuestion as GuessingGameObj
 import time
 
+
 class TwoGuessingGame:
     """This is a number guessing game. When an instance is created, two numbers between 1 and 10 are chosen, and the user can be asked to guess the number."""
+
     def __init__(self):
         """When an instance is created, it creates two single-number guessing games and associates a name with each."""
-        #Note: this is coded without a list, and is therefore bad. The objective of this and the next game is to ease you into the use of lists.
+        # Note: this is coded without a list, and is therefore bad. The objective of this and the next game is to ease you into the use of lists.
         self.game1 = GuessingGameObj.GuessingGame()
         self.game2 = GuessingGameObj.GuessingGame()
 
@@ -29,14 +31,10 @@ class TwoGuessingGame:
             self.game2.markGameDone()
             return True
         return False
-        
-        # if guess == self.game1:
-        #     return self.game1.markGameDone()
-        # elif guess == self.game2:
-        #     return self.game2.markGameDone()
-###################################################################################
-## Functions above this point shouldn't assume anything about how i/o is handled!
-##############################################################################
+
+    ###################################################################################
+    ## Functions above this point shouldn't assume anything about how i/o is handled!
+    ##############################################################################
 
     def printGuessFeedback(self, guess):
         """Prints feedback about the guess to the terminal (std i/o). Does not print feedback from games that have been finished. Uses the names associated with each game so that the user can tell the "speakers" appart."""
@@ -46,36 +44,44 @@ class TwoGuessingGame:
                 print(f"Too Low!!! says {self.name1}")
             elif result1 == 1:
                 print(f"Too High!!! says {self.name1}")
-        
+            else:
+                print(f"You got the right guess for {self.name1}")
+                self.game1.markGameDone()
+
         if not self.game2.checkGameDone():
             result2 = self.game2.checkGuess(guess)
             if result2 == -1:
                 print(f"Too Low!!! says {self.name2}")
             elif result2 == 1:
                 print(f"Too High!!! says {self.name2}")
+            else:
+                print(f"You got the right guess for {self.name2}")
+                self.game2.markGameDone()
 
     def playGame(self):
         """Instructs the current game instance to play itself with the user via the terminal (std i/o)."""
         print(self.getRules())
 
         count_game_cycle = 0
+        total_guess = 5
 
         while not self.allGamesDone():
             user_guess = int(input("What's your guess? "))
-            if self.checkCorrectGuess(user_guess):
-                name = self.name1 if self.game1.checkGameDone() else self.name2
-                print(f"You got the right number for {name}")
             self.printGuessFeedback(user_guess)
-
-            total_guess = 5
             count_game_cycle += 1
             remaining_guess = total_guess - count_game_cycle
             print(f"Remaining Guesses = {remaining_guess}")
+            print("-" * 50)
 
-            if count_game_cycle == 5:
+            if self.allGamesDone():
+                print("Contrats You Won the Game!!!")
+                print("You guessed the correct number for both.")
+            elif count_game_cycle == total_guess:
                 self.game1.markGameDone()
                 self.game2.markGameDone()
-                print(f"Sorry you lost the game. \nYou used all your guess.\nSo the correct number for {self.name1} is {self.game1.num} and \nthe correct number for {self.name2} is {self.game2.num}")
+                print(
+                    f"Sorry you lost the game. \nYou used all your guess.\nSo the correct number for {self.name1} is {self.game1.num} and \nthe correct number for {self.name2} is {self.game2.num}"
+                )
 
 
 if __name__ == "__main__":
