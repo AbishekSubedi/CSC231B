@@ -79,6 +79,7 @@ class TwoGuessingGame:
             elif count_game_cycle == total_guess:
                 self.game1.markGameDone()
                 self.game2.markGameDone()
+
                 print(
                     f"Sorry you lost the game. \nYou used all your guess.\nSo the correct number for {self.name1} is {self.game1.num} and \nthe correct number for {self.name2} is {self.game2.num}"
                 )
