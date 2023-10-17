@@ -1,3 +1,8 @@
+TOO_HIGH = 1
+TOO_LOW = -1
+CORRECT = 0
+
+
 class AIGuessingGame:
     """This is an AI number guessing game. When an instance is created, it sets up a range from 1 and 10, and attempts to guess the user's number within that range via binary search."""
 
@@ -17,40 +22,42 @@ class AIGuessingGame:
 
     def updateRange(self, guess, feedback):
         """Updates the range of uncertanty or marks the game complete based on the provided guess and feedback code (1, 0, or -1)."""
-        if feedback == 1:
+        if feedback == TOO_HIGH:
             self.upper_bound = guess - 1
-        elif feedback == -1:
+        elif feedback == TOO_LOW:
             self.lower_bound = guess + 1
+
+        # user_number = int(input("Enter your number to be guessed by me :)"))
 
     ##No I/O above this point!
 
     def getFeedbackFromTerminal(self, guess):
         """Uses the terminal to get feedback from the user about the provided guess. Returns 1 if the guess is greater than the user's number, -1 if it is smaller, and 0 if it is the same."""
 
-        # user_number = int(input("Enter your number to be guessed by me :)"))
+        print(f"Is {guess} your number????")
 
-        print(
-            f"Is {guess} your number????"
-        )  # This line is incomplete! How do you ask the user about the guess?
+        print("a - Too low!\nb - You got it!\nc - Too high!")
 
-        print(
-            "a - Too low!\nb - You got it!\nc - Too high!"
-        )  # This line is finished, you don't need to change it.
-
-        # Note: this function is incomplete, finish it!
-        # What is the user expecting to do now?
-        # What do you need to do after that?
         user_input = input("Choose among the three option: \n")
 
         if user_input == "a":
-            return -1
+            return TOO_LOW
         elif user_input == "b":
-            return 0
+            return CORRECT
         elif user_input == "c":
-            return 1
+            return TOO_HIGH
 
     def playGame(self):
         """Instructs the current game instance to play itself with the user via the terminal (std i/o)."""
+        print(self.getRules())
+        feedback = None
+
+        while feedback != CORRECT:
+            guess = self.calcGuess()
+            feedback = self.getFeedbackFromTerminal(guess)
+            self.updateRange(guess, feedback)
+
+        print(f"I guessed your correct number. It's {guess}")
 
 
 if __name__ == "__main__":
