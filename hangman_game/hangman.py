@@ -12,7 +12,7 @@ class Hangman:
 
     def setWord(self, word):
         """Sets the given word as the word to guess, updating the working word and the list of already guessed letters as well."""
-        self.wordToGuess = word  # .lower()
+        self.wordToGuess = word.lower()
         self.workingWord = ["-"] * len(self.wordToGuess)
         self.guessedAlready = []
 
