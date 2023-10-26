@@ -20,21 +20,21 @@ class Hangman:
 
     def getWord(self):
         """Returns a word to be guessed. Currently just returns HelloWorld."""
-        return random.choice(open("usa.txt", "r").readlines()).split()
+        with open("usa.txt") as game_words_file:
+            game_lines = game_words_file.readlines()
+            game_words = [game_line.split() for game_line in game_lines]
+            game_words = [
+                game_word for game_line in game_words for game_word in game_line
+            ]
+
+        return random.choice(game_words)
 
     def getTextPerson(self, stage):
         """Returns a single string, suitable to be printed, depicting the person at the given stage of the game."""
         if stage == 0:
             return ""
         elif stage == 1:
-            return """
-                     |--------
-                     |       O
-                     |
-                     |
-                     |
-                     ==============
-        """
+            return "O"
         elif stage == 2:
             return "\O"
         elif stage == 3:
@@ -71,15 +71,32 @@ class Hangman:
     ###Functions below this point assume that the game is being played on the terminal, and can use print and input.
     def showInTerminal(self):
         """Prints the current state of the game to the terminal (the ASCII graphic of the person, the working state of the word, and the letters guessed so far)."""
+        print(self.getTextPerson(self.errorCount))
+        print("".join(self.workingWord))
+        print(f"Guessed already: " + ", ".join(self.guessedAlready))
 
     def getGuessFromTerminal(self):
         """Gets the next guess from the user.
         Returns the user's guess if and only if the guess is allowable
         Repeats untill the user enters an allowable guess.
         """
+        while True:
+            guess = input("Enter a word: ").lower()
+            if self.allowableGuess(guess):
+                return guess
+            print("Invalid guess.")
 
     def playGame(self):
         """Instructs the game to play itself with the user in the terminal."""
+        while not self.gameWon and not self.gameLost:
+            self.showInTerminal()
+            guess = self.getGuessFromTerminal()
+            self.updateGame(guess)
+
+        if self.gameWon:
+            print("Congratulations, you won!")
+        else:
+            print(f"Sorry, you lost. The word was: {self.wordToGuess}")
 
 
 if __name__ == "__main__":
